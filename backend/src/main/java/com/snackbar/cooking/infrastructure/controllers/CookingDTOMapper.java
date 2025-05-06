@@ -1,12 +1,11 @@
 package com.snackbar.cooking.infrastructure.controllers;
 
 import com.snackbar.cooking.domain.entity.Cooking;
-import com.snackbar.order.domain.model.StatusOrder;
+import com.snackbar.cooking.domain.entity.StatusOrder;
 
 public class CookingDTOMapper {
     
     public Cooking createRequestToDomain(String orderId) {
-
         String myOrderId = orderId;
         String id = null;
         StatusOrder status = null;

@@ -1,34 +1,32 @@
 package com.snackbar.cooking.application.usecases;
 
 import com.snackbar.cooking.domain.entity.Cooking;
+import com.snackbar.cooking.domain.entity.Order;
+import com.snackbar.cooking.domain.entity.StatusOrder;
 import com.snackbar.cooking.domain.exceptions.CookingOperationException;
 import com.snackbar.cooking.domain.exceptions.OrderStatusInvalidException;
-import com.snackbar.cooking.domain.exceptions.OrderUpdateException;
-import com.snackbar.order.domain.model.Order;
-import com.snackbar.order.domain.model.StatusOrder;
 import com.snackbar.cooking.application.gateways.CookingGateway;
-import com.snackbar.order.service.OrderService;
-
-
-import java.math.BigDecimal;
+import com.snackbar.cooking.application.gateways.OrderGateway;
 
 import org.springframework.stereotype.Service;
-
 
 @Service
 public class CreateCookingUseCase {
     private final CookingGateway cookingGateway;
-    private final OrderService orderService;
+    private final OrderGateway orderGateway;
+    private static final String STATUS_PAID = "PAGO";
+    private static final String STATUS_RECEIVED = "RECEBIDO";
 
-    public CreateCookingUseCase(CookingGateway cookingGateway, OrderService orderService) {
+    public CreateCookingUseCase(CookingGateway cookingGateway, OrderGateway orderGateway) {
         this.cookingGateway = cookingGateway;
-        this.orderService = orderService;
+        this.orderGateway = orderGateway;
     }
 
     public Cooking createCooking(Cooking cooking) {
         // 1. Get and validate order
-        Order order = orderService.searchOrderId(cooking.orderId());
-        validateOrderStatus(order, StatusOrder.PAGO);
+        Order order = orderGateway.findById(cooking.orderId())
+            .orElseThrow(() -> new CookingOperationException("Order not found: " + cooking.orderId()));
+        validateOrderStatus(order, STATUS_PAID);
 
         try {
             // 2. Create cooking record with RECEBIDO status
@@ -37,7 +35,7 @@ public class CreateCookingUseCase {
             Cooking savedCooking = cookingGateway.createCooking(localCooking);
             
             // 3. Update order status
-            orderService.updateOrderStatus(cooking.orderId(), StatusOrder.RECEBIDO);
+            orderGateway.updateStatus(cooking.orderId(), STATUS_RECEIVED);
 
             return savedCooking;
             
@@ -46,20 +44,11 @@ public class CreateCookingUseCase {
         }
     }
 
-    private void validateOrderStatus(Order order, StatusOrder currentStatusOrder) {
-        if (order.getStatusOrder() != currentStatusOrder) {
+    private void validateOrderStatus(Order order, String expectedStatus) {
+        if (!expectedStatus.equals(order.statusOrder())) {
             throw new OrderStatusInvalidException(
-                "Order must be in PAGO status to be received for cooking. Current status: " + order.getStatusOrder()
+                "Order must be in PAGO status to be received for cooking. Current status: " + order.statusOrder()
             );
-        }
-    }
-
-    private void updateOrderStatus(Order order) {
-        try {
-            order.setStatusOrder(StatusOrder.RECEBIDO);
-            orderService.updateOrder(order);
-        } catch (Exception e) {
-            throw new OrderUpdateException("Failed to update order status", e);
         }
     }
 }

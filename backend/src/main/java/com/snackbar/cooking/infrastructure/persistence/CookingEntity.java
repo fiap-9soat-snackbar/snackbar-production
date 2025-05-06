@@ -1,10 +1,8 @@
 package com.snackbar.cooking.infrastructure.persistence;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
-import com.snackbar.order.domain.model.StatusOrder;
+import com.snackbar.cooking.domain.entity.StatusOrder;
 
 @Document(collection = "cookings")
 public class CookingEntity {

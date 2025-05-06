@@ -2,9 +2,9 @@ package com.snackbar.cooking.infrastructure.gateways;
 
 import com.snackbar.cooking.application.gateways.CookingGateway;
 import com.snackbar.cooking.domain.entity.Cooking;
+import com.snackbar.cooking.domain.entity.StatusOrder;
 import com.snackbar.cooking.infrastructure.persistence.CookingEntity;
 import com.snackbar.cooking.infrastructure.persistence.CookingRepository;
-import com.snackbar.order.domain.model.StatusOrder;
 
 import org.springframework.stereotype.Component;
 import java.util.List;

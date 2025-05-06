@@ -1,7 +1,7 @@
 package com.snackbar.cooking.application.gateways;
 
 import com.snackbar.cooking.domain.entity.Cooking;
-import com.snackbar.order.domain.model.StatusOrder;
+import com.snackbar.cooking.domain.entity.StatusOrder;
 
 import java.util.List;
 

@@ -1,13 +1,12 @@
 package com.snackbar.cooking.application.usecases;
 
 import com.snackbar.cooking.domain.entity.Cooking;
+import com.snackbar.cooking.domain.entity.Order;
+import com.snackbar.cooking.domain.entity.StatusOrder;
 import com.snackbar.cooking.domain.exceptions.CookingOperationException;
 import com.snackbar.cooking.domain.exceptions.OrderStatusInvalidException;
-import com.snackbar.cooking.domain.exceptions.OrderUpdateException;
-import com.snackbar.order.domain.model.Order;
-import com.snackbar.order.domain.model.StatusOrder;
 import com.snackbar.cooking.application.gateways.CookingGateway;
-import com.snackbar.order.service.OrderService;
+import com.snackbar.cooking.application.gateways.OrderGateway;
 import com.snackbar.cooking.infrastructure.persistence.CookingRepository;
 
 import org.springframework.stereotype.Service;
@@ -16,25 +15,29 @@ import org.springframework.stereotype.Service;
 public class FinishPreparationUseCase {
     private final CookingGateway cookingGateway;
     private final CookingRepository cookingRepository;
-    private final OrderService orderService;
+    private final OrderGateway orderGateway;
+    private static final String STATUS_PREPARATION = "PREPARACAO";
+    private static final String STATUS_READY = "PRONTO";
 
-    public FinishPreparationUseCase(CookingGateway cookingGateway, CookingRepository cookingRepository, OrderService orderService) {
+    public FinishPreparationUseCase(CookingGateway cookingGateway, CookingRepository cookingRepository, OrderGateway orderGateway) {
         this.cookingGateway = cookingGateway;
         this.cookingRepository = cookingRepository;
-        this.orderService = orderService;
+        this.orderGateway = orderGateway;
     }
 
     public Cooking updateCooking(Cooking cooking) {
         // 1. Get and validate order
-        Order order = orderService.searchOrderId(cooking.orderId());
-        validateOrderStatus(order, StatusOrder.PREPARACAO);
+        Order order = orderGateway.findById(cooking.orderId())
+            .orElseThrow(() -> new CookingOperationException("Order not found: " + cooking.orderId()));
+        validateOrderStatus(order, STATUS_PREPARATION);
         
         try {
-            // 2. Create cooking record with RECEBIDO status
+            // 2. Update cooking status to PRONTO
             cookingGateway.updateCookingStatus(cooking.orderId(), StatusOrder.PRONTO);
             Cooking savedCooking = cookingGateway.findByOrderId(cooking.orderId());
+            
             // 3. Update order status
-            orderService.updateOrderStatus(cooking.orderId(), StatusOrder.PRONTO);
+            orderGateway.updateStatus(cooking.orderId(), STATUS_READY);
 
             return savedCooking;
             
@@ -43,12 +46,11 @@ public class FinishPreparationUseCase {
         }
     }
 
-    private void validateOrderStatus(Order order, StatusOrder currentStatusOrder) {
-        if (order.getStatusOrder() != currentStatusOrder) {
+    private void validateOrderStatus(Order order, String expectedStatus) {
+        if (!expectedStatus.equals(order.statusOrder())) {
             throw new OrderStatusInvalidException(
-                "Order must be in PREPARACAO status to be received for cooking. Current status: " + order.getStatusOrder()
+                "Order must be in PREPARACAO status to finish preparation. Current status: " + order.statusOrder()
             );
         }
     }
-
 }
