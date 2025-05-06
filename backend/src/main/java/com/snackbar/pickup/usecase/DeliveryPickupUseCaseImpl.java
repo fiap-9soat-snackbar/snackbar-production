@@ -4,19 +4,17 @@ import com.snackbar.pickup.entity.Pickup;
 import com.snackbar.pickup.entity.StatusPickup;
 import com.snackbar.pickup.gateway.PickupRepository;
 import org.springframework.stereotype.Service;
-import com.snackbar.orderRefactory.application.usecases.OrderUseCase;
+import com.snackbar.pickup.client.OrderClient;
 
 @Service
 public class DeliveryPickupUseCaseImpl implements DeliveryPickupUseCase {
 
     private final PickupRepository pickupRepository;
-    private final OrderUseCase orderUseCase;
+    private final OrderClient orderClient;
 
-
-    public DeliveryPickupUseCaseImpl(PickupRepository pickupRepository, OrderUseCase orderUseCase) {
+    public DeliveryPickupUseCaseImpl(PickupRepository pickupRepository, OrderClient orderClient) {
         this.pickupRepository = pickupRepository;
-        this.orderUseCase = orderUseCase;
-
+        this.orderClient = orderClient;
     }
 
     @Override
@@ -32,7 +30,7 @@ public class DeliveryPickupUseCaseImpl implements DeliveryPickupUseCase {
         pickupRepository.save(pickup);
         System.out.println("Pedido " + orderId + " foi Finalizado");
 
-        // Update status in Order Collection
-        orderUseCase.updateStatusOrder(orderId,"FINALIZADO");
+        // Update status in Order Collection via OrderClient (Feign)
+        orderClient.updateOrderStatus(orderId, "FINALIZADO");
     }
 }
