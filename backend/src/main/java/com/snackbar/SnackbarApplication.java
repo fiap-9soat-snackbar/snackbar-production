@@ -9,7 +9,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
     "com.snackbar.cooking",
     "com.snackbar.pickup",
 })
-@EnableFeignClients
+@EnableFeignClients(basePackages = {"com.snackbar.cooking.client", "com.snackbar.pickup.client"})
 public class SnackbarApplication {
 
     public static void main(String[] args) {

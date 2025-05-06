@@ -3,7 +3,7 @@
 FROM eclipse-temurin:21-jre
 
 # Set Java web server default port to 8080 for build and environment variables
-ARG APP_PORT=8080
+ARG APP_PORT=8081
 ENV APP_PORT=$APP_PORT
 EXPOSE $APP_PORT
 

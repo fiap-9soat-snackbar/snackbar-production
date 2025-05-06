@@ -42,10 +42,10 @@ public class CookingConfig {
         return new CookingRepositoryGateway(cookingRepository, cookingMapper);
     }
 
-    @Bean
-    public OrderGateway orderGateway(OrderClient orderClient, OrderResponseMapper orderResponseMapper) {
-        return new OrderClientGateway(orderClient, orderResponseMapper);
-    }
+    //@Bean
+    //public OrderGateway orderGateway(OrderClient orderClient, OrderResponseMapper orderResponseMapper) {
+    //    return new OrderClientGateway(orderClient, orderResponseMapper);
+    //}
 
     @Bean
     public CreateCookingUseCase createCookingUseCase(CookingGateway cookingGateway, OrderGateway orderGateway) {
