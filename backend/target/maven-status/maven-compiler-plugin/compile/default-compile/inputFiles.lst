@@ -13,6 +13,7 @@
 /Users/thiagomoreira/APP-Snackbar/snackbar-production/backend/src/main/java/com/snackbar/pickup/usecase/DeliveryPickupUseCaseImpl.java
 /Users/thiagomoreira/APP-Snackbar/snackbar-production/backend/src/main/java/com/snackbar/pickup/client/OrderResponse.java
 /Users/thiagomoreira/APP-Snackbar/snackbar-production/backend/src/main/java/com/snackbar/cooking/infrastructure/controllers/CookingController.java
+/Users/thiagomoreira/APP-Snackbar/snackbar-production/backend/src/main/java/com/snackbar/config/SecurityConfig.java
 /Users/thiagomoreira/APP-Snackbar/snackbar-production/backend/src/main/java/com/snackbar/cooking/application/usecases/StartPreparationUseCase.java
 /Users/thiagomoreira/APP-Snackbar/snackbar-production/backend/src/main/java/com/snackbar/cooking/domain/exceptions/OrderStatusInvalidException.java
 /Users/thiagomoreira/APP-Snackbar/snackbar-production/backend/src/main/java/com/snackbar/cooking/infrastructure/config/CookingConfig.java

@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "cooking-order-service", url = "${order.service.url}")
 public interface OrderClient {
 
-    @GetMapping("/orders/{orderId}")
+    @GetMapping("/api/orders/{orderId}")
     OrderResponse getOrder(@PathVariable("orderId") String orderId);
 
-    @PatchMapping("/orders/{orderId}/status")
+    @PatchMapping("/api/orders/{orderId}/status")
     void updateOrderStatus(@PathVariable("orderId") String orderId, @RequestParam("status") String status);
 }
