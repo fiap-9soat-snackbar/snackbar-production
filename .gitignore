@@ -8,3 +8,4 @@ duvidas
 target
 terraform.tfstate
 terraform.tfstate.backup
+docker-compose-local.yml

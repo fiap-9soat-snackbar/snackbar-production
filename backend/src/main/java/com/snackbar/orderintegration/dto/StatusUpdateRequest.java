@@ -1,4 +1,4 @@
-package com.snackbar.pickup.dto;
+package com.snackbar.orderintegration.dto;
 
 public class StatusUpdateRequest {
     private String status;

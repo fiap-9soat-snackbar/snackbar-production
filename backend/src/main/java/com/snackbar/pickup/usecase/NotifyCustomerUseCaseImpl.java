@@ -1,7 +1,7 @@
 package com.snackbar.pickup.usecase;
 
-import com.snackbar.pickup.client.OrderClient;
-import com.snackbar.pickup.dto.StatusUpdateRequest;
+import com.snackbar.orderintegration.client.OrderClient;
+import com.snackbar.orderintegration.dto.StatusUpdateRequest;
 import com.snackbar.pickup.entity.Pickup;
 import com.snackbar.pickup.entity.StatusPickup;
 import com.snackbar.pickup.gateway.PickupRepository;

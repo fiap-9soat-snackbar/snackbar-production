@@ -1,9 +1,10 @@
-package com.snackbar.pickup.client;
+package com.snackbar.orderintegration.client;
 
-import com.snackbar.pickup.client.*;
-import com.snackbar.pickup.dto.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
+
+import com.snackbar.orderintegration.client.*;
+import com.snackbar.orderintegration.dto.*;
 
 @FeignClient(name = "order", url = "${ORDER_SERVICE_URL:http://localhost:8080}")
 public interface OrderClient {
