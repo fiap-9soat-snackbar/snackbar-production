@@ -1,4 +1,4 @@
-package com.snackbar.orderintegration.client;
+package com.snackbar.orderintegration.dto;
 
 import java.util.List;
 
