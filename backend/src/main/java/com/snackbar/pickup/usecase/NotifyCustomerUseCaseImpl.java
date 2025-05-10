@@ -1,10 +1,11 @@
 package com.snackbar.pickup.usecase;
 
+import com.snackbar.pickup.client.OrderClient;
+import com.snackbar.pickup.dto.StatusUpdateRequest;
 import com.snackbar.pickup.entity.Pickup;
 import com.snackbar.pickup.entity.StatusPickup;
 import com.snackbar.pickup.gateway.PickupRepository;
 import org.springframework.stereotype.Service;
-import com.snackbar.pickup.client.OrderClient;
 
 @Service
 public class NotifyCustomerUseCaseImpl implements NotifyCustomerUseCase {
@@ -24,11 +25,10 @@ public class NotifyCustomerUseCaseImpl implements NotifyCustomerUseCase {
         pickup.setStatusPickup(StatusPickup.PRONTO);
         pickup.setNotifyCustomer(true);
 
-        // Save status update in Pickup Collection
         pickupRepository.save(pickup);
         System.out.println("Pedido " + orderId + " está PRONTO, Cliente notificado");
 
-        // Update status in Order Collection via OrderClient (Feign)
-        orderClient.updateOrderStatus(orderId, "PRONTO");
+        // Atualiza o status da order no order-service
+        orderClient.updateOrderStatus(orderId, new StatusUpdateRequest("PRONTO"));
     }
 }

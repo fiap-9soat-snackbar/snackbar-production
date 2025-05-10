@@ -1,10 +1,8 @@
-package com.snackbar.pickup.client;
+package com.snackbar.pickup.dto;
 
 import java.util.List;
 
-import com.snackbar.pickup.dto.OrderItemDto;
-
-public class OrderResponse {
+public class OrderDto {
     private String id;
     private String orderNumber;
     private String orderDateTime;
@@ -16,7 +14,7 @@ public class OrderResponse {
     private double totalPrice;
     private int remainingTime;
 
-    // Getters e Setters
+    // Getters e setters
     public String getId() {
         return id;
     }

@@ -20,6 +20,9 @@ services:
       - MONGODB_OPTIONS=${MONGODB_OPTIONS}
       - JWT_SECRET=${JWT_SECRET}
       - JWT_EXPIRES=${JWT_EXPIRES}
+      - ORDER_SERVICE_URL=http://snackbar-order:8080
+    networks:
+      - snackbar-network
       
 
 #  mongodb:
@@ -42,3 +45,7 @@ services:
 #volumes:
 #  mongodb_data:
 #
+
+networks:
+  snackbar-network:
+    external: true
