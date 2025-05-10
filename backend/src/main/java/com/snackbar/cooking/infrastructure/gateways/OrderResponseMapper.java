@@ -25,7 +25,7 @@ public class OrderResponseMapper {
                 items,
                 response.statusOrder(),
                 response.waitingTime(),
-                response.remainingWaitingTime()
+                response.remainingTime()
         );
     }
 

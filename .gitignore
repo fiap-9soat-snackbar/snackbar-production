@@ -4,6 +4,7 @@ duvidas
 .DS_Store
 .terraform
 .terraform.lock.hcl
+.env
+target
 terraform.tfstate
 terraform.tfstate.backup
-.env

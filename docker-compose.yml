@@ -1,6 +1,8 @@
 services:
   app:
-    build: backend
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
     restart: always
     container_name: snackbar-production
     ports:
@@ -39,3 +41,4 @@ services:
 #
 #volumes:
 #  mongodb_data:
+#
