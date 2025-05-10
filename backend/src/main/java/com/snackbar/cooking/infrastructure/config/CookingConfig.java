@@ -5,10 +5,10 @@ import org.springframework.context.annotation.Configuration;
 
 import com.snackbar.cooking.application.gateways.CookingGateway;
 import com.snackbar.cooking.application.gateways.OrderGateway;
-import com.snackbar.cooking.client.OrderClient;
+import com.snackbar.orderintegration.client.OrderClient;
 import com.snackbar.cooking.infrastructure.gateways.CookingEntityMapper;
 import com.snackbar.cooking.infrastructure.gateways.CookingRepositoryGateway;
-import com.snackbar.cooking.infrastructure.gateways.OrderClientGateway;
+import com.snackbar.cooking.infrastructure.gateways.OrderIntegrationGateway;
 import com.snackbar.cooking.infrastructure.gateways.OrderResponseMapper;
 import com.snackbar.cooking.infrastructure.persistence.CookingRepository;
 import com.snackbar.cooking.application.usecases.CreateCookingUseCase;

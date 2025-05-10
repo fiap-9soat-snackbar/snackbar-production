@@ -18,9 +18,9 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/actuator/**",
-                                "/**" // cuidado: libera tudo
+                                "/**" 
                         ).permitAll()
-                        .anyRequest().permitAll() // ou .authenticated() se quiser exigir token depois
+                        .anyRequest().permitAll()
                 )
                 .httpBasic(basic -> basic.disable())
                 .formLogin(form -> form.disable());

@@ -1,41 +1,34 @@
 package com.snackbar.cooking.infrastructure.gateways;
 
-import com.snackbar.cooking.client.OrderItemResponse;
-import com.snackbar.cooking.client.OrderResponse;
 import com.snackbar.cooking.domain.entity.Order;
 import com.snackbar.cooking.domain.entity.OrderItem;
+import com.snackbar.orderintegration.dto.OrderResponse;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class OrderResponseMapper {
 
     public Order toEntity(OrderResponse response) {
-        List<OrderItem> items = response.items().stream()
-                .map(this::toOrderItem)
-                .collect(Collectors.toList());
+        if (response == null)
+            return null;
 
+        // Como o OrderResponse do orderintegration tem menos campos que o Order do
+        // cooking,
+        // vamos criar um Order com os campos disponíveis e deixar os outros como null
+        // ou vazios
         return new Order(
-                response.id(),
-                response.name(),
-                response.orderNumber(),
-                response.orderDateTime(),
-                items,
-                response.statusOrder(),
-                response.waitingTime(),
-                response.remainingTime()
-        );
-    }
-
-    private OrderItem toOrderItem(OrderItemResponse itemResponse) {
-        return new OrderItem(
-                itemResponse.name(),
-                itemResponse.price(),
-                itemResponse.quantity(),
-                itemResponse.cookingTime(),
-                itemResponse.customization()
+                response.getId(),
+                null, // name
+                null, // orderNumber
+                LocalDateTime.now(), // orderDateTime
+                new ArrayList<>(), // items
+                response.getStatusOrder(),
+                0, // waitingTime
+                0 // remainingWaitingTime
         );
     }
 }
