@@ -1,8 +1,10 @@
 services:
-  app:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+  #app:
+  #  build:
+  #    context: ./backend
+  #    dockerfile: Dockerfile
+  snackbar-production:
+    image: 171219910203199431032017/snackbar-production:latest
     restart: always
     container_name: snackbar-production
     ports:
