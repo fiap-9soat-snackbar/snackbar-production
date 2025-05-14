@@ -3,6 +3,7 @@ package com.snackbar.cooking.infrastructure.controllers;
 import com.snackbar.cooking.application.usecases.*;
 import com.snackbar.cooking.domain.entity.Cooking;
 import com.snackbar.cooking.domain.entity.StatusOrder;
+import com.snackbar.cooking.domain.entity.StatusOrder;
 import com.snackbar.cooking.domain.exceptions.CookingNotFoundException;
 import com.snackbar.cooking.domain.exceptions.CookingOperationException;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,7 +56,7 @@ class CookingControllerTest {
         String orderId = "order123";
         Cooking domainCooking = new Cooking(null, orderId, null);
         Cooking createdCooking = new Cooking("cooking123", orderId, StatusOrder.RECEBIDO);
-        CreateCookingResponse expectedResponse = new CreateCookingResponse("cooking123", orderId, "RECEBIDO");
+        CreateCookingResponse expectedResponse = new CreateCookingResponse("cooking123", orderId, StatusOrder.RECEBIDO);
         
         when(cookingDTOMapper.createRequestToDomain(orderId)).thenReturn(domainCooking);
         when(createCookingUseCase.createCooking(domainCooking)).thenReturn(createdCooking);
@@ -79,7 +80,7 @@ class CookingControllerTest {
         String orderId = "order123";
         Cooking domainCooking = new Cooking(null, orderId, null);
         Cooking updatedCooking = new Cooking("cooking123", orderId, StatusOrder.PREPARACAO);
-        CreateCookingResponse expectedResponse = new CreateCookingResponse("cooking123", orderId, "PREPARACAO");
+        CreateCookingResponse expectedResponse = new CreateCookingResponse("cooking123", orderId, StatusOrder.PREPARACAO);
         
         when(cookingDTOMapper.createRequestToDomain(orderId)).thenReturn(domainCooking);
         when(startPreparationUseCase.updateCooking(domainCooking)).thenReturn(updatedCooking);
@@ -103,7 +104,7 @@ class CookingControllerTest {
         String orderId = "order123";
         Cooking domainCooking = new Cooking(null, orderId, null);
         Cooking updatedCooking = new Cooking("cooking123", orderId, StatusOrder.PRONTO);
-        CreateCookingResponse expectedResponse = new CreateCookingResponse("cooking123", orderId, "PRONTO");
+        CreateCookingResponse expectedResponse = new CreateCookingResponse("cooking123", orderId, StatusOrder.PRONTO);
         
         when(cookingDTOMapper.createRequestToDomain(orderId)).thenReturn(domainCooking);
         when(finishPreparationUseCase.updateCooking(domainCooking)).thenReturn(updatedCooking);
@@ -128,8 +129,8 @@ class CookingControllerTest {
         Cooking cooking2 = new Cooking("cooking2", "order2", StatusOrder.PREPARACAO);
         List<Cooking> cookings = Arrays.asList(cooking1, cooking2);
         
-        CreateCookingResponse response1 = new CreateCookingResponse("cooking1", "order1", "RECEBIDO");
-        CreateCookingResponse response2 = new CreateCookingResponse("cooking2", "order2", "PREPARACAO");
+        CreateCookingResponse response1 = new CreateCookingResponse("cooking1", "order1", StatusOrder.RECEBIDO);
+        CreateCookingResponse response2 = new CreateCookingResponse("cooking2", "order2", StatusOrder.PREPARACAO);
         List<CreateCookingResponse> expectedResponses = Arrays.asList(response1, response2);
         
         when(getAllCookingsUseCase.execute()).thenReturn(cookings);
@@ -169,7 +170,7 @@ class CookingControllerTest {
         // Arrange
         String orderId = "order123";
         Cooking cooking = new Cooking("cooking123", orderId, StatusOrder.PREPARACAO);
-        CreateCookingResponse expectedResponse = new CreateCookingResponse("cooking123", orderId, "PREPARACAO");
+        CreateCookingResponse expectedResponse = new CreateCookingResponse("cooking123", orderId, StatusOrder.PREPARACAO);
         
         when(getCookingByOrderIdUseCase.execute(orderId)).thenReturn(cooking);
         when(cookingDTOMapper.createToResponse(cooking)).thenReturn(expectedResponse);

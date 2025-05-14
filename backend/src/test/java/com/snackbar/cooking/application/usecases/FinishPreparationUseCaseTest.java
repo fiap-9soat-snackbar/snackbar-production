@@ -18,6 +18,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
@@ -45,8 +46,8 @@ class FinishPreparationUseCaseTest {
         // Arrange
         String orderId = "order123";
         Cooking inputCooking = new Cooking(null, orderId, null);
-        Order order = new Order(orderId, "PREPARACAO", null);
-        
+        Order order = new Order(orderId, "PREPARACAO", null, null, null, null, null, null);
+
         Cooking updatedCooking = new Cooking("cooking123", orderId, StatusOrder.PRONTO);
         
         when(orderGateway.findById(orderId)).thenReturn(Optional.of(order));
@@ -92,7 +93,7 @@ class FinishPreparationUseCaseTest {
         // Arrange
         String orderId = "order123";
         Cooking inputCooking = new Cooking(null, orderId, null);
-        Order order = new Order(orderId, "RECEBIDO", null); // Not in PREPARACAO status
+        Order order = new Order(orderId, "RECEBIDO", null, null, null, null, null, null);
         
         when(orderGateway.findById(orderId)).thenReturn(Optional.of(order));
         
@@ -112,7 +113,7 @@ class FinishPreparationUseCaseTest {
         // Arrange
         String orderId = "order123";
         Cooking inputCooking = new Cooking(null, orderId, null);
-        Order order = new Order(orderId, "PREPARACAO", null);
+        Order order = new Order(orderId, "PREPARACAO", null, null, null, null, null, null);
         
         when(orderGateway.findById(orderId)).thenReturn(Optional.of(order));
         when(cookingGateway.updateCookingStatus(eq(orderId), eq(StatusOrder.PRONTO)))

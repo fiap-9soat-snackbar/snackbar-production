@@ -37,14 +37,9 @@ class CookingRepositoryGatewayTest {
     void createCooking_shouldSaveAndReturnCooking() {
         // Arrange
         Cooking cooking = new Cooking(null, "order123", StatusOrder.RECEBIDO);
-        CookingEntity entity = new CookingEntity();
-        entity.setOrderId("order123");
-        entity.setStatus(StatusOrder.RECEBIDO);
+        CookingEntity entity = new CookingEntity("cooking123", "order123", StatusOrder.RECEBIDO);
         
-        CookingEntity savedEntity = new CookingEntity();
-        savedEntity.setId("cooking123");
-        savedEntity.setOrderId("order123");
-        savedEntity.setStatus(StatusOrder.RECEBIDO);
+        CookingEntity savedEntity = new CookingEntity("cooking123", "order123", StatusOrder.RECEBIDO);
         
         Cooking expectedCooking = new Cooking("cooking123", "order123", StatusOrder.RECEBIDO);
         
@@ -70,15 +65,9 @@ class CookingRepositoryGatewayTest {
         String orderId = "order123";
         StatusOrder newStatus = StatusOrder.PRONTO;
         
-        CookingEntity existingEntity = new CookingEntity();
-        existingEntity.setId("cooking123");
-        existingEntity.setOrderId(orderId);
-        existingEntity.setStatus(StatusOrder.PREPARACAO);
+        CookingEntity existingEntity = new CookingEntity("cooking123", orderId, StatusOrder.PREPARACAO);
         
-        CookingEntity updatedEntity = new CookingEntity();
-        updatedEntity.setId("cooking123");
-        updatedEntity.setOrderId(orderId);
-        updatedEntity.setStatus(newStatus);
+        CookingEntity updatedEntity = new CookingEntity("cooking123", orderId, newStatus);
         
         Cooking expectedCooking = new Cooking("cooking123", orderId, newStatus);
         
@@ -121,10 +110,7 @@ class CookingRepositoryGatewayTest {
         // Arrange
         String orderId = "order123";
         
-        CookingEntity entity = new CookingEntity();
-        entity.setId("cooking123");
-        entity.setOrderId(orderId);
-        entity.setStatus(StatusOrder.PREPARACAO);
+        CookingEntity entity = new CookingEntity("cooking123", orderId, StatusOrder.PREPARACAO);
         
         Cooking expectedCooking = new Cooking("cooking123", orderId, StatusOrder.PREPARACAO);
         
@@ -145,15 +131,9 @@ class CookingRepositoryGatewayTest {
     @Test
     void findAll_shouldReturnAllCookings() {
         // Arrange
-        CookingEntity entity1 = new CookingEntity();
-        entity1.setId("cooking1");
-        entity1.setOrderId("order1");
-        entity1.setStatus(StatusOrder.RECEBIDO);
+        CookingEntity entity1 = new CookingEntity("cooking1", "order1", StatusOrder.RECEBIDO);
         
-        CookingEntity entity2 = new CookingEntity();
-        entity2.setId("cooking2");
-        entity2.setOrderId("order2");
-        entity2.setStatus(StatusOrder.PREPARACAO);
+        CookingEntity entity2 = new CookingEntity("cooking2", "order2", StatusOrder.PREPARACAO);
         
         List<CookingEntity> entities = Arrays.asList(entity1, entity2);
         

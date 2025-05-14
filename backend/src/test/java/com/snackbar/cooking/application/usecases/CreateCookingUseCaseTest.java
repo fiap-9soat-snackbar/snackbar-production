@@ -17,6 +17,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
@@ -41,7 +42,7 @@ class CreateCookingUseCaseTest {
         // Arrange
         String orderId = "order123";
         Cooking inputCooking = new Cooking(null, orderId, null);
-        Order order = new Order(orderId, "PAGO", null);
+        Order order = new Order(orderId, "PAGO", null, null, null, null, null, null);
         
         Cooking savedCooking = new Cooking("cooking123", orderId, StatusOrder.RECEBIDO);
         
@@ -86,8 +87,8 @@ class CreateCookingUseCaseTest {
         // Arrange
         String orderId = "order123";
         Cooking inputCooking = new Cooking(null, orderId, null);
-        Order order = new Order(orderId, "RECEBIDO", null); // Not in PAGO status
-        
+        Order order = new Order(orderId, "RECEBIDO", null, null, null, null, null, null);
+
         when(orderGateway.findById(orderId)).thenReturn(Optional.of(order));
         
         // Act & Assert
@@ -106,8 +107,8 @@ class CreateCookingUseCaseTest {
         // Arrange
         String orderId = "order123";
         Cooking inputCooking = new Cooking(null, orderId, null);
-        Order order = new Order(orderId, "PAGO", null);
-        
+        Order order = new Order(orderId, "PAGO", null, null, null, null, null, null);
+
         when(orderGateway.findById(orderId)).thenReturn(Optional.of(order));
         when(cookingGateway.createCooking(any(Cooking.class))).thenThrow(new RuntimeException("Database error"));
         
