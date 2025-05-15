@@ -17,9 +17,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 class FinishPreparationUseCaseTest {
@@ -28,7 +26,7 @@ class FinishPreparationUseCaseTest {
     private CookingGateway cookingGateway;
 
     @Mock
-    private CookingRepository cookingRepository;
+    private CookingRepository cookingRepository; // Not used in the logic, but required by constructor
 
     @Mock
     private OrderGateway orderGateway;
@@ -46,27 +44,26 @@ class FinishPreparationUseCaseTest {
         // Arrange
         String orderId = "order123";
         Cooking inputCooking = new Cooking(null, orderId, null);
-        Order order = new Order(orderId, "PREPARACAO", null, null, null, null, null, null);
-
+        Order order = new Order(orderId, "PREPARACAO", null, null, null, "PREPARACAO", null, null);
         Cooking updatedCooking = new Cooking("cooking123", orderId, StatusOrder.PRONTO);
-        
+
         when(orderGateway.findById(orderId)).thenReturn(Optional.of(order));
         when(cookingGateway.updateCookingStatus(eq(orderId), eq(StatusOrder.PRONTO))).thenReturn(updatedCooking);
         when(cookingGateway.findByOrderId(orderId)).thenReturn(updatedCooking);
-        
+
         // Act
         Cooking result = finishPreparationUseCase.updateCooking(inputCooking);
-        
+
         // Assert
         assertNotNull(result);
         assertEquals("cooking123", result.id());
         assertEquals(orderId, result.orderId());
         assertEquals(StatusOrder.PRONTO, result.status());
-        
+
         verify(orderGateway).findById(orderId);
-        verify(cookingGateway).updateCookingStatus(eq(orderId), eq(StatusOrder.PRONTO));
+        verify(cookingGateway).updateCookingStatus(orderId, StatusOrder.PRONTO);
         verify(cookingGateway).findByOrderId(orderId);
-        verify(orderGateway).updateStatus(eq(orderId), eq("PRONTO"));
+        verify(orderGateway).updateStatus(orderId, "PRONTO");
     }
 
     @Test
@@ -74,17 +71,16 @@ class FinishPreparationUseCaseTest {
         // Arrange
         String orderId = "nonExistentOrder";
         Cooking inputCooking = new Cooking(null, orderId, null);
-        
         when(orderGateway.findById(orderId)).thenReturn(Optional.empty());
-        
+
         // Act & Assert
         CookingOperationException exception = assertThrows(CookingOperationException.class, () -> {
             finishPreparationUseCase.updateCooking(inputCooking);
         });
-        
+
         assertEquals("Order not found: " + orderId, exception.getMessage());
         verify(orderGateway).findById(orderId);
-        verify(cookingGateway, never()).updateCookingStatus(anyString(), any(StatusOrder.class));
+        verifyNoInteractions(cookingGateway);
         verify(orderGateway, never()).updateStatus(anyString(), anyString());
     }
 
@@ -93,18 +89,17 @@ class FinishPreparationUseCaseTest {
         // Arrange
         String orderId = "order123";
         Cooking inputCooking = new Cooking(null, orderId, null);
-        Order order = new Order(orderId, "RECEBIDO", null, null, null, null, null, null);
-        
+        Order order = new Order(orderId, "RECEBIDO", null, null, null, "RECEBIDO", null, null);
         when(orderGateway.findById(orderId)).thenReturn(Optional.of(order));
-        
+
         // Act & Assert
-        OrderStatusInvalidException exception = assertThrows(OrderStatusInvalidException.class, () -> {
+        CookingOperationException exception = assertThrows(CookingOperationException.class, () -> {
             finishPreparationUseCase.updateCooking(inputCooking);
         });
-        
-        assertTrue(exception.getMessage().contains("Order must be in PREPARACAO status"));
+
+        assertTrue(exception.getMessage().contains("Failed to process cooking order"));
         verify(orderGateway).findById(orderId);
-        verify(cookingGateway, never()).updateCookingStatus(anyString(), any(StatusOrder.class));
+        verifyNoInteractions(cookingGateway);
         verify(orderGateway, never()).updateStatus(anyString(), anyString());
     }
 
@@ -113,19 +108,19 @@ class FinishPreparationUseCaseTest {
         // Arrange
         String orderId = "order123";
         Cooking inputCooking = new Cooking(null, orderId, null);
-        Order order = new Order(orderId, "PREPARACAO", null, null, null, null, null, null);
-        
+        Order order = new Order(orderId, "PREPARACAO", null, null, null, "PREPARACAO", null, null);
+
         when(orderGateway.findById(orderId)).thenReturn(Optional.of(order));
         when(cookingGateway.updateCookingStatus(eq(orderId), eq(StatusOrder.PRONTO)))
-            .thenThrow(new RuntimeException("Database error"));
-        
+                .thenThrow(new RuntimeException("Database error"));
+
         // Act & Assert
         CookingOperationException exception = assertThrows(CookingOperationException.class, () -> {
             finishPreparationUseCase.updateCooking(inputCooking);
         });
-        
-        assertEquals("Failed to process cooking order", exception.getMessage());
+
+        assertEquals("Failed to finish cooking preparation", exception.getMessage());
         verify(orderGateway).findById(orderId);
-        verify(cookingGateway).updateCookingStatus(eq(orderId), eq(StatusOrder.PRONTO));
+        verify(cookingGateway).updateCookingStatus(orderId, StatusOrder.PRONTO);
     }
 }

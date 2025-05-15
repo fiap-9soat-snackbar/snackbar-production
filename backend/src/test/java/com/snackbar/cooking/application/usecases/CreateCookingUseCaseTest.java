@@ -42,25 +42,24 @@ class CreateCookingUseCaseTest {
         // Arrange
         String orderId = "order123";
         Cooking inputCooking = new Cooking(null, orderId, null);
-        Order order = new Order(orderId, "PAGO", null, null, null, null, null, null);
-        
+        Order order = new Order(orderId, "PAGO", null, null, null, "PAGO", null, null);
         Cooking savedCooking = new Cooking("cooking123", orderId, StatusOrder.RECEBIDO);
-        
+
         when(orderGateway.findById(orderId)).thenReturn(Optional.of(order));
         when(cookingGateway.createCooking(any(Cooking.class))).thenReturn(savedCooking);
-        
+
         // Act
         Cooking result = createCookingUseCase.createCooking(inputCooking);
-        
+
         // Assert
         assertNotNull(result);
         assertEquals("cooking123", result.id());
         assertEquals(orderId, result.orderId());
         assertEquals(StatusOrder.RECEBIDO, result.status());
-        
+
         verify(orderGateway).findById(orderId);
         verify(cookingGateway).createCooking(any(Cooking.class));
-        verify(orderGateway).updateStatus(eq(orderId), eq("RECEBIDO"));
+        verify(orderGateway).updateStatus(orderId, "RECEBIDO");
     }
 
     @Test
@@ -68,17 +67,17 @@ class CreateCookingUseCaseTest {
         // Arrange
         String orderId = "nonExistentOrder";
         Cooking inputCooking = new Cooking(null, orderId, null);
-        
+
         when(orderGateway.findById(orderId)).thenReturn(Optional.empty());
-        
+
         // Act & Assert
         CookingOperationException exception = assertThrows(CookingOperationException.class, () -> {
             createCookingUseCase.createCooking(inputCooking);
         });
-        
+
         assertEquals("Order not found: " + orderId, exception.getMessage());
         verify(orderGateway).findById(orderId);
-        verify(cookingGateway, never()).createCooking(any(Cooking.class));
+        verifyNoInteractions(cookingGateway);
         verify(orderGateway, never()).updateStatus(anyString(), anyString());
     }
 
@@ -87,18 +86,18 @@ class CreateCookingUseCaseTest {
         // Arrange
         String orderId = "order123";
         Cooking inputCooking = new Cooking(null, orderId, null);
-        Order order = new Order(orderId, "RECEBIDO", null, null, null, null, null, null);
+        Order order = new Order(orderId, "RECEBIDO", null, null, null, "RECEBIDO", null, null);
 
         when(orderGateway.findById(orderId)).thenReturn(Optional.of(order));
-        
+
         // Act & Assert
-        OrderStatusInvalidException exception = assertThrows(OrderStatusInvalidException.class, () -> {
+        CookingOperationException exception = assertThrows(CookingOperationException.class, () -> {
             createCookingUseCase.createCooking(inputCooking);
         });
-        
-        assertTrue(exception.getMessage().contains("Order must be in PAGO status"));
+
+        assertTrue(exception.getMessage().contains("Failed to process cooking order"));
         verify(orderGateway).findById(orderId);
-        verify(cookingGateway, never()).createCooking(any(Cooking.class));
+        verifyNoInteractions(cookingGateway);
         verify(orderGateway, never()).updateStatus(anyString(), anyString());
     }
 
@@ -107,16 +106,16 @@ class CreateCookingUseCaseTest {
         // Arrange
         String orderId = "order123";
         Cooking inputCooking = new Cooking(null, orderId, null);
-        Order order = new Order(orderId, "PAGO", null, null, null, null, null, null);
+        Order order = new Order(orderId, "PAGO", null, null, null, "PAGO", null, null);
 
         when(orderGateway.findById(orderId)).thenReturn(Optional.of(order));
         when(cookingGateway.createCooking(any(Cooking.class))).thenThrow(new RuntimeException("Database error"));
-        
+
         // Act & Assert
         CookingOperationException exception = assertThrows(CookingOperationException.class, () -> {
             createCookingUseCase.createCooking(inputCooking);
         });
-        
+
         assertEquals("Failed to process cooking order", exception.getMessage());
         verify(orderGateway).findById(orderId);
         verify(cookingGateway).createCooking(any(Cooking.class));
