@@ -20,14 +20,38 @@ class CookingDTOMapperTest {
     void createRequestToDomain_shouldMapOrderIdCorrectly() {
         // Arrange
         String orderId = "order123";
-        
+
         // Act
         Cooking result = cookingDTOMapper.createRequestToDomain(orderId);
-        
+
         // Assert
         assertNotNull(result);
-        assertNull(result.id());
         assertEquals(orderId, result.orderId());
+        assertNull(result.id());
+        assertNull(result.status());
+    }
+
+    @Test
+    void createRequestToDomain_withNullOrderId_shouldReturnCookingWithNullOrderId() {
+        // Act
+        Cooking result = cookingDTOMapper.createRequestToDomain(null);
+
+        // Assert
+        assertNotNull(result);
+        assertNull(result.orderId());
+        assertNull(result.id());
+        assertNull(result.status());
+    }
+
+    @Test
+    void createRequestToDomain_withEmptyOrderId_shouldReturnCookingWithEmptyOrderId() {
+        // Act
+        Cooking result = cookingDTOMapper.createRequestToDomain("");
+
+        // Assert
+        assertNotNull(result);
+        assertEquals("", result.orderId());
+        assertNull(result.id());
         assertNull(result.status());
     }
 
@@ -37,16 +61,30 @@ class CookingDTOMapperTest {
         String id = "cooking123";
         String orderId = "order123";
         StatusOrder status = StatusOrder.PREPARACAO;
-        
         Cooking cooking = new Cooking(id, orderId, status);
-        
+
         // Act
         CreateCookingResponse result = cookingDTOMapper.createToResponse(cooking);
-        
+
         // Assert
         assertNotNull(result);
         assertEquals(id, result.id());
         assertEquals(orderId, result.orderId());
         assertEquals(status, result.status());
+    }
+
+    @Test
+    void createToResponse_withNullFields_shouldMapToNullFields() {
+        // Arrange
+        Cooking cooking = new Cooking(null, null, null);
+
+        // Act
+        CreateCookingResponse result = cookingDTOMapper.createToResponse(cooking);
+
+        // Assert
+        assertNotNull(result);
+        assertNull(result.id());
+        assertNull(result.orderId());
+        assertNull(result.status());
     }
 }
