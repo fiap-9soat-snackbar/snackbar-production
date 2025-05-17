@@ -16,15 +16,31 @@ public class IsReadyPickupUseCaseImpl implements IsReadyPickupUseCase {
 
     @Override
     public boolean isReady(String orderId) {
-        return pickupRepository.findByOrderId(orderId)
-                .map(pickup -> pickup.getStatusPickup() == StatusPickup.PRONTO)
-                .orElse(false);
+        if (orderId == null || orderId.isEmpty()) {
+            return false;
+        }
+        
+        try {
+            return pickupRepository.findByOrderId(orderId)
+                    .map(pickup -> pickup.getStatusPickup() == StatusPickup.PRONTO)
+                    .orElse(false);
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
     public boolean isDone(String orderId) {
-        return pickupRepository.findByOrderId(orderId)
-                .map(pickup -> pickup.getStatusPickup() == StatusPickup.FINALIZADO)
-                .orElse(false);
+        if (orderId == null || orderId.isEmpty()) {
+            return false;
+        }
+        
+        try {
+            return pickupRepository.findByOrderId(orderId)
+                    .map(pickup -> pickup.getStatusPickup() == StatusPickup.FINALIZADO)
+                    .orElse(false);
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

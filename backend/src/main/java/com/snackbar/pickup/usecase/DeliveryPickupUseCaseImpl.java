@@ -20,6 +20,10 @@ public class DeliveryPickupUseCaseImpl implements DeliveryPickupUseCase {
 
     @Override
     public void delivery(String orderId) {
+        if (orderId == null || orderId.isEmpty()) {
+            throw new IllegalArgumentException("Order ID cannot be null or empty");
+        }
+        
         Pickup pickup = pickupRepository.findByOrderId(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Este pedido não foi retirado: " + orderId));
 

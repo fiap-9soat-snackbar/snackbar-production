@@ -51,12 +51,12 @@ public class CookingConfig {
 
     @Bean
     public StartPreparationUseCase startPreparationUseCase(CookingGateway cookingGateway, CookingRepository cookingRepository, OrderGateway orderGateway) {
-        return new StartPreparationUseCase(cookingGateway, cookingRepository, orderGateway);
+        return new StartPreparationUseCase(cookingGateway, orderGateway);
     }
 
     @Bean
     public FinishPreparationUseCase finishPreparationUseCase(CookingGateway cookingGateway, CookingRepository cookingRepository, OrderGateway orderGateway) {
-        return new FinishPreparationUseCase(cookingGateway, cookingRepository, orderGateway);
+        return new FinishPreparationUseCase(cookingGateway, orderGateway);
     }
 
     @Bean

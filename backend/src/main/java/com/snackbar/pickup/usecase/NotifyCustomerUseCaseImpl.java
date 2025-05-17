@@ -7,6 +7,8 @@ import com.snackbar.pickup.entity.StatusPickup;
 import com.snackbar.pickup.gateway.PickupRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class NotifyCustomerUseCaseImpl implements NotifyCustomerUseCase {
 
@@ -20,10 +22,23 @@ public class NotifyCustomerUseCaseImpl implements NotifyCustomerUseCase {
 
     @Override
     public void notify(String orderId) {
-        Pickup pickup = new Pickup();
-        pickup.setOrderId(orderId);
-        pickup.setStatusPickup(StatusPickup.PRONTO);
-        pickup.setNotifyCustomer(true);
+        if (orderId == null || orderId.isEmpty()) {
+            throw new IllegalArgumentException("Order ID cannot be null or empty");
+        }
+        
+        Pickup pickup;
+        Optional<Pickup> existingPickup = pickupRepository.findByOrderId(orderId);
+        
+        if (existingPickup.isPresent()) {
+            pickup = existingPickup.get();
+            pickup.setStatusPickup(StatusPickup.PRONTO);
+            pickup.setNotifyCustomer(true);
+        } else {
+            pickup = new Pickup();
+            pickup.setOrderId(orderId);
+            pickup.setStatusPickup(StatusPickup.PRONTO);
+            pickup.setNotifyCustomer(true);
+        }
 
         pickupRepository.save(pickup);
         System.out.println("Pedido " + orderId + " está PRONTO, Cliente notificado");

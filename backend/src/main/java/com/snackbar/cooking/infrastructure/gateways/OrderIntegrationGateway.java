@@ -18,11 +18,11 @@ import java.util.Optional;
 public class OrderIntegrationGateway implements OrderGateway {
 
     private final OrderClient orderClient;
-    private final OrderIntegrationMapper orderMapper;
+    private final OrderResponseMapper orderMapper;
 
-    public OrderIntegrationGateway(OrderClient orderClient, OrderIntegrationMapper orderMapper) {
+    public OrderIntegrationGateway(OrderClient orderClient, OrderResponseMapper orderResponseMapper) {
         this.orderClient = orderClient;
-        this.orderMapper = orderMapper;
+        this.orderMapper = orderResponseMapper;
     }
 
     @Override
