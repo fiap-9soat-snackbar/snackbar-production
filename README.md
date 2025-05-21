@@ -1,4 +1,4 @@
-# Snackbar Application
+# Snackbar Production Application
 
 <p align="center">
 	<img alt="Spring boot" src="https://img.shields.io/badge/Spring%20Boot-6DB33F.svg?style=for-the-badge&logo=Spring-Boot&logoColor=white">
@@ -32,6 +32,11 @@ The application is written in Java 21 using Spring Boot, built using Maven 3.9.9
 The Domain Drive Design (DDD) diagrams that define the main application flows are accessible in this Miro board: https://miro.com/app/board/uXjVLK2yXLA=/
 
 The two videos that describe the user flow and the admin flow are hosted in Youtube in the following links (only visible through the links, not searcheable):
+
+## Phase 3 Content
+
+* Pipeline Video: https://youtu.be/KK2P6RIOIDk
+* Snackbar Production: https://youtu.be/LDmrA5kP2N8
 
 ## Phase 3 Content
 
@@ -130,13 +135,7 @@ The application exposes the following REST API endpoints:
 
 | route               | description                                          
 |----------------------|-----------------------------------------------------
-| <kbd>Identity and Access Management (IAM) Endpoints</kbd>     | See [iam.md](https://github.com/commskywalker/snackbar/blob/main/backend/src/main/java/com/snackbar/iam/iam.md)
-| <kbd>Productsv2 Endpoints</kbd>     | See [productsv2.md](https://github.com/commskywalker/snackbar/blob/main/backend/src/main/java/com/snackbar/product/productsv2.md)
-| <kbd>Basket Endpoints</kbd>     | See [basket.md](https://github.com/commskywalker/snackbar/blob/main/backend/src/main/java/com/snackbar/order/basket.md)
-| <kbd>Orders Refactored Endpoints</kbd>     | See [ordersRefactored.md](https://github.com/commskywalker/snackbar/blob/main/backend/src/main/java/com/snackbar/order/ordersRefactored.md)
-| <kbd>Checkout Endpoints</kbd>     | See [checkout.md](https://github.com/commskywalker/snackbar/blob/main/backend/src/main/java/com/snackbar/checkout/checkout.md)
-| <kbd>Payment Endpoints</kbd>     | See [payments.md](https://github.com/commskywalker/snackbar/blob/main/backend/src/main/java/com/snackbar/payment/payment.md)
-</div>
+|</div>
 | <kbd>Cooking Endpoints</kbd>     | See [cooking.md](https://github.com/commskywalker/snackbar/blob/main/backend/src/main/java/com/snackbar/cooking/cooking.md)
 | <kbd>Pickup Endpoints</kbd>     | See [pickup.md](https://github.com/commskywalker/snackbar/blob/main/backend/src/main/java/com/snackbar/pickup/pickup.md)
 </div>
