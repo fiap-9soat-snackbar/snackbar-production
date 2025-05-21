@@ -206,3 +206,9 @@ $ java -jar ./backend/target/snackbar-0.0.1-SNAPSHOT.jar
 ### Infrastructure Architecture
 
 Available at: [miro.com.br](https://miro.com/app/board/uXjVL0azFlU=/?track=true&utm_source=notification&utm_medium=email&utm_campaign=approve-request&utm_content=go-to-miro&lid=1v8fyk3ru6qu)
+
+
+### Coverage
+
+https://sonarcloud.io/summary/new_code?id=fiap-9soat-snackbar_snackbar-production&branch=main
+https://drive.google.com/file/d/1ECQCvbHRq4Ykb3zS3J_pi5FHRglgcHsb/view?usp=sharing
